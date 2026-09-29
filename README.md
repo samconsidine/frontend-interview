@@ -17,8 +17,11 @@ interview, then:
 npm run dev
 ```
 
-The app connects to a fixed demo robot (`interview-sim`, a simulated feed) —
-no further config needed.
+The app connects to a fixed demo robot (`yam-box-sim`, a MuJoCo simulation of
+two YAM arms) — no further config needed. It publishes one video track,
+`main`: a ZED-Mini-style stereo pair, left and right eye packed side by side
+in a single 2560x720 frame. Splitting that into a proper stereo VR view is
+part of the exercise.
 
 ## What's here
 

@@ -3,6 +3,7 @@ import {
   AdamoProvider,
   useRobots,
   useRobotOnline,
+  useTracks,
   Stream,
   resolveNearestRouter,
   type VideoStatus,
@@ -11,8 +12,9 @@ import {
 const API_KEY = import.meta.env.VITE_ADAMO_API_KEY as string | undefined;
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? "https://api.adamohq.com";
 
-// Fixed to the interview's demo robot — a simulated feed, not a real robot.
-const ROBOT_ID = "interview-sim";
+// Fixed to the interview's demo robot — a MuJoCo sim of two YAM arms with a
+// stereo camera feed, not a real robot.
+const ROBOT_ID = "yam-box-sim";
 
 type Connection = { url: string; org: string; orgId?: string; authToken: string };
 
@@ -65,6 +67,7 @@ function useAdamoConnection(apiKey: string, apiUrl: string): Connection | null {
 function TeleopView() {
   const robots = useRobots();
   const online = useRobotOnline(ROBOT_ID);
+  const tracks = useTracks(ROBOT_ID);
   const [status, setStatus] = useState<VideoStatus>("connecting");
 
   return (
@@ -73,6 +76,7 @@ function TeleopView() {
       <p>robots seen: {robots.map((r) => r.id).join(", ") || "(none yet)"}</p>
       <p>selected robot: {ROBOT_ID}</p>
       <p>robot online: {String(online)}</p>
+      <p>tracks: {tracks.map((t) => t.name).join(", ") || "(none yet)"}</p>
       <p>video status: {status}</p>
       <div style={{ width: 960, height: 540, background: "black" }}>
         <Stream
