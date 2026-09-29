@@ -4,6 +4,7 @@ import {
   useRobots,
   useRobotOnline,
   useTracks,
+  useJointState,
   Stream,
   resolveNearestRouter,
   type VideoStatus,
@@ -68,6 +69,7 @@ function TeleopView() {
   const robots = useRobots();
   const online = useRobotOnline(ROBOT_ID);
   const tracks = useTracks(ROBOT_ID);
+  const joints = useJointState(ROBOT_ID);
   const [status, setStatus] = useState<VideoStatus>("connecting");
 
   return (
@@ -77,6 +79,7 @@ function TeleopView() {
       <p>selected robot: {ROBOT_ID}</p>
       <p>robot online: {String(online)}</p>
       <p>tracks: {tracks.map((t) => t.name).join(", ") || "(none yet)"}</p>
+      <p>joints: {joints ? joints.values.map((v) => v.toFixed(2)).join(", ") : "(none yet)"}</p>
       <p>video status: {status}</p>
       <div style={{ width: 960, height: 540, background: "black" }}>
         <Stream
