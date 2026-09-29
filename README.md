@@ -5,10 +5,20 @@ Starter for the Adamo VR teleop frontend interview.
 ## Setup
 
 ```
+npm install adamo adamo-react react react-dom
 npm install
-cp .env.local.example .env.local   # fill in VITE_ADAMO_API_KEY and VITE_ROBOT_ID
+cp .env.local.example .env.local
+```
+
+Set `VITE_ADAMO_API_KEY` in `.env.local` to the API key given to you for this
+interview, then:
+
+```
 npm run dev
 ```
+
+The app connects to a fixed demo robot (`interview-sim`, a simulated feed) —
+no further config needed.
 
 ## What's here
 

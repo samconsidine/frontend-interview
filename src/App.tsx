@@ -10,7 +10,9 @@ import {
 
 const API_KEY = import.meta.env.VITE_ADAMO_API_KEY as string | undefined;
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? "https://api.adamohq.com";
-const FIXED_ROBOT_ID = import.meta.env.VITE_ROBOT_ID as string | undefined;
+
+// Fixed to the interview's demo robot — a simulated feed, not a real robot.
+const ROBOT_ID = "interview-sim";
 
 type Connection = { url: string; org: string; orgId?: string; authToken: string };
 
@@ -62,29 +64,26 @@ function useAdamoConnection(apiKey: string, apiUrl: string): Connection | null {
 
 function TeleopView() {
   const robots = useRobots();
-  const robotId = FIXED_ROBOT_ID ?? robots[0]?.id;
-  const online = useRobotOnline(robotId);
+  const online = useRobotOnline(ROBOT_ID);
   const [status, setStatus] = useState<VideoStatus>("connecting");
 
   return (
     <div style={{ fontFamily: "monospace", padding: 16, color: "white", background: "#111", minHeight: "100vh" }}>
       <p>org key: {API_KEY ? "set" : "MISSING (set VITE_ADAMO_API_KEY)"}</p>
       <p>robots seen: {robots.map((r) => r.id).join(", ") || "(none yet)"}</p>
-      <p>selected robot: {robotId ?? "(waiting for discovery)"}</p>
+      <p>selected robot: {ROBOT_ID}</p>
       <p>robot online: {String(online)}</p>
       <p>video status: {status}</p>
-      {robotId && (
-        <div style={{ width: 960, height: 540, background: "black" }}>
-          <Stream
-            robot={robotId}
-            track="main"
-            robotOnline={online}
-            style={{ width: "100%", height: "100%" }}
-            onStatusChange={setStatus}
-            onPlaying={() => console.log("[interview-vr] first frame decoded")}
-          />
-        </div>
-      )}
+      <div style={{ width: 960, height: 540, background: "black" }}>
+        <Stream
+          robot={ROBOT_ID}
+          track="main"
+          robotOnline={online}
+          style={{ width: "100%", height: "100%" }}
+          onStatusChange={setStatus}
+          onPlaying={() => console.log("[interview-vr] first frame decoded")}
+        />
+      </div>
     </div>
   );
 }
